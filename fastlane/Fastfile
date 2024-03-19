@@ -1,0 +1,8 @@
+desc "Fetch jira tickets"
+lane :test_fetch_tickets do
+  jira_fetch_tickets(
+    url: "YOUR_URL_HERE",
+    username: "YOUR_USERNAME_HERE",
+    password: "YOUR_PASSWORD_HERE"
+  )
+end
