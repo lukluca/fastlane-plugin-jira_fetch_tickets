@@ -2,6 +2,8 @@
 require:
 - rubocop/require_tools
 - rubocop-performance
+- rubocop-rspec
+- rubocop-rake
 AllCops:
   TargetRubyVersion: 2.6
   NewCops: enable
@@ -19,41 +21,42 @@ AllCops:
   - "**/spec/fixtures/broken_files/broken_file.rb"
   - "**/*.provisionprofile"
 Lint/ErbNewArguments:
-  Enabled: false
+  Enabled: true
 Style/SlicingWithRange:
-  Enabled: false
+  Enabled: true
 Style/MultipleComparison:
-  Enabled: false
+  Enabled: true
 Style/PercentLiteralDelimiters:
-  Enabled: false
+  Enabled: true
 Style/ClassCheck:
   EnforcedStyle: kind_of?
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
 Style/SafeNavigation:
-  Enabled: false
+  Enabled: true
 Performance/RegexpMatch:
-  Enabled: false
+  Enabled: true
 Performance/StringReplacement:
-  Enabled: false
+  Enabled: true
 Style/NumericPredicate:
-  Enabled: false
+  Enabled: true
 Metrics/BlockLength:
-  Enabled: false
+  Enabled: true
+  CountAsOne: ['array', 'heredoc', 'method_call']
 Metrics/ModuleLength:
-  Enabled: false
+  Enabled: true
 Naming/VariableNumber:
-  Enabled: false
+  Enabled: true
 Style/MissingRespondToMissing:
-  Enabled: false
+  Enabled: true
 Style/MultilineBlockChain:
-  Enabled: false
+  Enabled: true
 Style/NumericLiteralPrefix:
-  Enabled: false
+  Enabled: true
 Style/TernaryParentheses:
-  Enabled: false
+  Enabled: true
 Style/EmptyMethod:
-  Enabled: false
+  Enabled: true
 Lint/UselessAssignment:
   Exclude:
   - "**/spec/**/*"
@@ -71,46 +74,46 @@ Require/MissingRequireStatement:
   - fastlane/**/*
   - supply/**/*
 Layout/FirstHashElementIndentation:
-  Enabled: false
+  Enabled: true
 Layout/HashAlignment:
-  Enabled: false
+  Enabled: true
 Layout/DotPosition:
-  Enabled: false
+  Enabled: true
 Style/DoubleNegation:
-  Enabled: false
+  Enabled: true
 Style/SymbolArray:
-  Enabled: false
+  Enabled: true
 Layout/HeredocIndentation:
-  Enabled: false
+  Enabled: true
 Style/MixinGrouping:
   Exclude:
   - "**/spec/**/*"
 Lint/SuppressedException:
-  Enabled: false
+  Enabled: true
 Lint/UnusedBlockArgument:
-  Enabled: false
+  Enabled: true
 Lint/AmbiguousBlockAssociation:
-  Enabled: false
+  Enabled: true
 Style/GlobalVars:
-  Enabled: false
+  Enabled: true
 Style/ClassAndModuleChildren:
-  Enabled: false
+  Enabled: true
 Style/SpecialGlobalVars:
-  Enabled: false
+  Enabled: true
 Metrics/AbcSize:
   Enabled: false
 Metrics/MethodLength:
-  Enabled: false
+  Enabled: true
 Metrics/CyclomaticComplexity:
-  Enabled: false
+  Enabled: true
 Style/WordArray:
   MinSize: 19
 Style/SignalException:
-  Enabled: false
+  Enabled: true
 Style/RedundantReturn:
-  Enabled: false
+  Enabled: true
 Style/IfUnlessModifier:
-  Enabled: false
+  Enabled: true
 Style/AndOr:
   Enabled: true
   EnforcedStyle: conditionals
@@ -121,24 +124,24 @@ Layout/LineLength:
 Metrics/ParameterLists:
   Max: 17
 Style/GuardClause:
-  Enabled: false
+  Enabled: true
 Style/StringLiterals:
-  Enabled: false
+  Enabled: true
 Style/QuotedSymbols:
-  Enabled: false
+  Enabled: true
 Style/ConditionalAssignment:
-  Enabled: false
+  Enabled: true
 Style/RedundantSelf:
-  Enabled: false
+  Enabled: true
 Lint/UnusedMethodArgument:
-  Enabled: false
+  Enabled: true
 Lint/ParenthesesAsGroupedExpression:
   Exclude:
   - "**/spec/**/*"
 Naming/PredicateName:
   Enabled: false
 Style/PerlBackrefs:
-  Enabled: false
+  Enabled: true
 Layout/SpaceAroundOperators:
   Exclude:
   - "**/spec/actions_specs/xcodebuild_spec.rb"
@@ -157,13 +160,13 @@ Naming/FileName:
 Style/Documentation:
   Enabled: false
 Style/MutableConstant:
-  Enabled: false
+  Enabled: true
 Style/ZeroLengthPredicate:
-  Enabled: false
+  Enabled: true
 Style/IfInsideElse:
-  Enabled: false
+  Enabled: true
 Style/CollectionMethods:
-  Enabled: false
+  Enabled: true
 Style/MethodCallWithArgsParentheses:
   Enabled: true
   AllowedMethods:
@@ -194,3 +197,7 @@ Bundler/OrderedGems:
 Gemspec/DevelopmentDependencies:
   Enabled: true
   EnforcedStyle: Gemfile
+RSpec/ExampleLength:
+  Enabled: false
+
+

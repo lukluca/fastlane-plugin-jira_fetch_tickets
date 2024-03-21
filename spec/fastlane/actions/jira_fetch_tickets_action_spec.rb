@@ -87,7 +87,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
 
     context 'with variables given through invocation' do
       it 'succeeds with required variables' do
-        stub_success_get("")
+        stub_success_get('')
 
         response = Fastlane::FastFile.new.parse("
             lane :test do
@@ -97,11 +97,11 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
               password: 'my_password'
           )
           end").runner.execute(:test)
-        expect(response).to eq([{ issue: { "key" => "KEY-230" }, key: "KEY-230" }])
+        expect(response).to eq([{ issue: { 'key' => 'KEY-230' }, key: 'KEY-230' }])
       end
 
       it 'succeeds with all array variables' do
-        stub_success_get("project%20in%20(%22project_one%22,%20%22project_two%22)%20AND%20status%20in%20(%22status_one%22,%20%22status_two%22)%20AND%20labels%20in%20(%22label_one%22,%20%22label_two%22)%20AND%20Sprint%20in%20(%22sprint_one%22,%20%22sprint_two%22)%20AND%20my_custom_jql")
+        stub_success_get('project%20in%20(%22project_one%22,%20%22project_two%22)%20AND%20status%20in%20(%22status_one%22,%20%22status_two%22)%20AND%20labels%20in%20(%22label_one%22,%20%22label_two%22)%20AND%20Sprint%20in%20(%22sprint_one%22,%20%22sprint_two%22)%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -116,11 +116,11 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
             custom_jql: 'my_custom_jql'
         )
         end").runner.execute(:test)
-        expect(response).to eq([{ issue: { "key" => "KEY-230" }, key: "KEY-230" }])
+        expect(response).to eq([{ issue: { 'key' => 'KEY-230' }, key: 'KEY-230' }])
       end
 
       it 'succeeds with all strings variables' do
-        stub_success_get("project%20=%20%22my_project%22%20AND%20status%20=%20%22my_status%22%20AND%20labels%20=%20%22my_label%22%20AND%20Sprint%20=%20%22my_sprint%22%20AND%20my_custom_jql")
+        stub_success_get('project%20=%20%22my_project%22%20AND%20status%20=%20%22my_status%22%20AND%20labels%20=%20%22my_label%22%20AND%20Sprint%20=%20%22my_sprint%22%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -135,11 +135,11 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
             custom_jql: 'my_custom_jql'
         )
         end").runner.execute(:test)
-        expect(response).to eq([{ issue: { "key" => "KEY-230" }, key: "KEY-230" }])
+        expect(response).to eq([{ issue: { 'key' => 'KEY-230' }, key: 'KEY-230' }])
       end
 
       it 'fails' do
-        sub_failed_get("")
+        sub_failed_get('')
 
         Fastlane::FastFile.new.parse("
         lane :test do
@@ -188,32 +188,36 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
   end
 end
 
+# rubocop:disable Metrics/MethodLength
 def stub_success_get(jql)
   url = "https://jira-mycompany.atlassian.net/rest/api/2/search?jql=#{jql}"
 
   stub_request(:get, url)
     .with(
       headers: {
-           'Accept' => 'application/json',
-           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-           'Authorization' => 'Basic bXlfdXNlcm5hbWU6bXlfcGFzc3dvcmQ=',
-           'User-Agent' => 'Ruby'
+        'Accept' => 'application/json',
+        'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization' => 'Basic bXlfdXNlcm5hbWU6bXlfcGFzc3dvcmQ=',
+        'User-Agent' => 'Ruby'
       }
     )
-    .to_return(status: 200, body: "{\"expand\":\"schema,names\",\"startAt\":0,\"maxResults\":50,\"total\":57290,\"issues\":[{\"key\":\"KEY-230\"}]}", headers: {})
+    .to_return(status: 200, body: '{"expand":"schema,names","startAt":0,"maxResults":50,"total":57290,"issues":[{"key":"KEY-230"}]}', headers: {})
 end
+# rubocop:enable Metrics/MethodLength
 
+# rubocop:disable Metrics/MethodLength
 def sub_failed_get(jql)
   url = "https://jira-mycompany.atlassian.net/rest/api/2/search?jql=#{jql}"
 
   stub_request(:get, url)
     .with(
       headers: {
-           'Accept' => 'application/json',
-           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-           'Authorization' => 'Basic bXlfdXNlcm5hbWU6bXlfcGFzc3dvcmQ=',
-           'User-Agent' => 'Ruby'
+        'Accept' => 'application/json',
+        'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization' => 'Basic bXlfdXNlcm5hbWU6bXlfcGFzc3dvcmQ=',
+        'User-Agent' => 'Ruby'
       }
     )
-    .to_return(status: 401, body: "", headers: {})
+    .to_return(status: 401, body: '', headers: {})
 end
+# rubocop:enable Metrics/MethodLength

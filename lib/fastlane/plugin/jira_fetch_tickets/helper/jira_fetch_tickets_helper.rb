@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fastlane_core/ui/ui'
 
 module Fastlane
@@ -9,7 +11,7 @@ module Fastlane
       # as `Helper::JiraFetchTicketsHelper.your_method`
       #
       def self.show_message
-        UI.message("Hello from the jira_fetch_tickets plugin helper!")
+        UI.message('Hello from the jira_fetch_tickets plugin helper!')
       end
     end
   end
