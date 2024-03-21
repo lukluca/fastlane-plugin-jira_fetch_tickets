@@ -19,7 +19,7 @@ jobs:
       with:
         ruby-version: 3.3.0
     - name: Install dependencies
-      run: bundle check || bundle install --jobs=4 --retry=3 --path vendor/bundle
+      run: bundle check || bundle config set path 'vendor/bundle' || bundle install --jobs=4 --retry=3
     - name: Run tests
       run: bundle exec rake
     - name: Upload artifact
