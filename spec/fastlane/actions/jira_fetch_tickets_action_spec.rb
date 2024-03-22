@@ -39,7 +39,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
           lane :test do
             jira_fetch_tickets(
               url: 'YOUR_URL_HERE',
-              username: 'YOUR_USERNAME_HERE',
+              username: 'YOUR_USERNAME_HERE'
           )
           end").runner.execute(:test)
         end.to raise_error("No value found for 'password'")
@@ -101,7 +101,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
       end
 
       it 'succeeds with all array variables' do
-        stub_success_get('project%20in%20(%22project_one%22,%20%22project_two%22)%20AND%20status%20in%20(%22status_one%22,%20%22status_two%22)%20AND%20labels%20in%20(%22label_one%22,%20%22label_two%22)%20AND%20Sprint%20in%20(%22sprint_one%22,%20%22sprint_two%22)%20AND%20my_custom_jql')
+        stub_success_get('project%20in%20(project_one,%20project_two)%20AND%20status%20in%20(status_one,%20status_two)%20AND%20labels%20in%20(label_one,%20label_two)%20AND%20sprint%20in%20(sprint_one,%20sprint_two)%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -120,7 +120,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
       end
 
       it 'succeeds with all strings variables' do
-        stub_success_get('project%20=%20%22my_project%22%20AND%20status%20=%20%22my_status%22%20AND%20labels%20=%20%22my_label%22%20AND%20Sprint%20=%20%22my_sprint%22%20AND%20my_custom_jql')
+        stub_success_get('project%20=%20my_project%20AND%20status%20=%20my_status%20AND%20labels%20=%20my_label%20AND%20sprint%20=%20my_sprint%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do

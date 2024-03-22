@@ -2,7 +2,6 @@
 
 require 'fastlane/action'
 require 'fastlane_core'
-require_relative '../helper/jira_fetch_tickets_helper'
 
 module Fastlane
   module Actions
@@ -74,13 +73,13 @@ module Fastlane
 
         added = false
         unless sprints.instance_of?(NilClass)
-          options = { key: 'Sprint', values: sprints, jql: jql }
+          options = { key: 'sprint', values: sprints, jql: jql }
           jql = append_jql_from_array?(options)
           added = true
         end
 
         if !added && !sprint.instance_of?(NilClass)
-          options = { key: 'Sprint', value: sprint, jql: jql }
+          options = { key: 'sprint', value: sprint, jql: jql }
           jql = append_jql_from_string?(options)
         end
 
@@ -89,7 +88,7 @@ module Fastlane
           jql = append_jql?(options)
         end
 
-        UI.message("JQL query is '#{jql}'")
+        FastlaneCore::UI.message("JQL query is '#{jql}'")
 
         issues = client.Issue.jql(jql)
 
@@ -99,13 +98,19 @@ module Fastlane
 
         Actions.lane_context[SharedValues::JIRA_FETCH_TICKETS_RESULT] = issues
 
-        UI.success('Successfully fetched JIRA tickets!')
+        FastlaneCore::UI.success('Successfully fetched JIRA tickets!')
         issues
       end
 
       def self.jql_from_array?(options)
         values = options[:values]
-        values = values.map { |string| "\"#{string}\"" }
+        values = values.map do |string|
+          if string.include?(' ')
+            "\"#{string}\""
+          else
+            string.to_s
+          end
+        end
         "#{options[:key]} in (#{values.join(', ')})"
       end
 
@@ -118,7 +123,12 @@ module Fastlane
       end
 
       def self.jql_from_string?(options)
-        "#{options[:key]} = \"#{options[:value]}\""
+        value = options[:value]
+        if value.include?(' ')
+          "#{options[:key]} = \"#{options[:value]}\""
+        else
+          "#{options[:key]} = #{options[:value]}"
+        end
       end
 
       def self.append_jql_from_string?(options)
@@ -198,7 +208,7 @@ module Fastlane
                                        optional: true,
                                        conflicting_options: [:projects],
                                        conflict_block: proc do |_other|
-                                                         UI.message('Ignoring :project in favor of :projects')
+                                                         FastlaneCore::UI.message('Ignoring :project in favor of :projects')
                                                        end),
           FastlaneCore::ConfigItem.new(key: :statuses,
                                        env_name: 'FL_JIRA_FETCH_JQL_STATUSES',
@@ -212,7 +222,7 @@ module Fastlane
                                        optional: true,
                                        conflicting_options: [:statuses],
                                        conflict_block: proc do |_other|
-                                                         UI.message('Ignoring :status in favor of :statuses')
+                                                         FastlaneCore::UI.message('Ignoring :status in favor of :statuses')
                                                        end),
           FastlaneCore::ConfigItem.new(key: :labels,
                                        env_name: 'FL_JIRA_FETCH_JQL_LABELS',
@@ -226,7 +236,7 @@ module Fastlane
                                        optional: true,
                                        conflicting_options: [:labels],
                                        conflict_block: proc do |_other|
-                                                         UI.message('Ignoring :label in favor of :labels')
+                                                         FastlaneCore::UI.message('Ignoring :label in favor of :labels')
                                                        end),
           FastlaneCore::ConfigItem.new(key: :sprints,
                                        env_name: 'FL_JIRA_FETCH_JQL_SPRINTS',
@@ -240,7 +250,7 @@ module Fastlane
                                        optional: true,
                                        conflicting_options: [:sprints],
                                        conflict_block: proc do |_other|
-                                                         UI.message('Ignoring :sprint in favor of :sprints')
+                                                         FastlaneCore::UI.message('Ignoring :sprint in favor of :sprints')
                                                        end),
           FastlaneCore::ConfigItem.new(key: :custom_jql,
                                        env_name: 'FL_JIRA_FETCH_JQL_CUSTOM',
@@ -252,7 +262,7 @@ module Fastlane
       # rubocop:enable Metrics/MethodLength
 
       def self.verify_option(options)
-        UI.user_error!("No value found for '#{options[:key]}'") if options[:value].to_s.empty?
+        FastlaneCore::UI.user_error!("No value found for '#{options[:key]}'") if options[:value].to_s.empty?
       end
 
       # rubocop:disable Metrics/MethodLength
