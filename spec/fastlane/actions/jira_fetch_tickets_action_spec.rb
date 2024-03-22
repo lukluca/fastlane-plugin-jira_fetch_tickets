@@ -101,7 +101,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
       end
 
       it 'succeeds with all array variables' do
-        stub_success_get('project%20in%20(project_one,%20project_two)%20AND%20status%20in%20(status_one,%20status_two)%20AND%20labels%20in%20(label_one,%20label_two)%20AND%20sprint%20in%20(sprint_one,%20sprint_two)%20AND%20my_custom_jql')
+        stub_success_get('project%20in%20(project_one,%20project_two)%20AND%20status%20in%20(status_one,%20status_two)%20AND%20labels%20in%20(label_one,%20label_two)%20AND%20sprint%20in%20(sprint_one,%20sprint_two)%20AND%20fixversion%20in%20(%221.0.0(1)%22,%20%221.0.0(2)%22)%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -113,6 +113,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
             statuses: ['status_one', 'status_two'],
             labels: ['label_one', 'label_two'],
             sprints: ['sprint_one', 'sprint_two'],
+            fix_versions: ['1.0.0(1)', '1.0.0(2)'],
             custom_jql: 'my_custom_jql'
         )
         end").runner.execute(:test)
@@ -120,7 +121,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
       end
 
       it 'succeeds with all strings variables' do
-        stub_success_get('project%20=%20my_project%20AND%20status%20=%20my_status%20AND%20labels%20=%20my_label%20AND%20sprint%20=%20my_sprint%20AND%20my_custom_jql')
+        stub_success_get('project%20=%20my_project%20AND%20status%20=%20my_status%20AND%20labels%20=%20my_label%20AND%20sprint%20=%20my_sprint%20AND%20fixversion%20=%20%221.0.0(1)%22%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -132,6 +133,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
             status: 'my_status',
             label: 'my_label',
             sprint: 'my_sprint',
+            fix_version: '1.0.0(1)',
             custom_jql: 'my_custom_jql'
         )
         end").runner.execute(:test)

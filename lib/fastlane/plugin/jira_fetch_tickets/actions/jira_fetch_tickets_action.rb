@@ -33,6 +33,8 @@ module Fastlane
         label = params[:label]
         sprints = params[:sprints]
         sprint = params[:sprint]
+        fix_versions = params[:fix_versions]
+        fix_version = params[:fix_version]
         custom_jql = params[:custom_jql]
 
         jql = ''
@@ -83,6 +85,18 @@ module Fastlane
           jql = append_jql_from_string?(options)
         end
 
+        added = false
+        unless fix_versions.instance_of?(NilClass)
+          options = { key: 'fixversion', values: fix_versions, jql: jql }
+          jql = append_jql_from_array?(options)
+          added = true
+        end
+
+        if !added && !fix_version.instance_of?(NilClass)
+          options = { key: 'fixversion', value: fix_version, jql: jql }
+          jql = append_jql_from_string?(options)
+        end
+
         if custom_jql
           options = { jql: jql, new_value: custom_jql }
           jql = append_jql?(options)
@@ -105,7 +119,7 @@ module Fastlane
       def self.jql_from_array?(options)
         values = options[:values]
         values = values.map do |string|
-          if string.include?(' ')
+          if string.should_escape
             "\"#{string}\""
           else
             string.to_s
@@ -124,7 +138,7 @@ module Fastlane
 
       def self.jql_from_string?(options)
         value = options[:value]
-        if value.include?(' ')
+        if value.should_escape
           "#{options[:key]} = \"#{options[:value]}\""
         else
           "#{options[:key]} = #{options[:value]}"
@@ -252,6 +266,20 @@ module Fastlane
                                        conflict_block: proc do |_other|
                                                          FastlaneCore::UI.message('Ignoring :sprint in favor of :sprints')
                                                        end),
+          FastlaneCore::ConfigItem.new(key: :fix_versions,
+                                       env_name: 'FL_JIRA_FETCH_JQL_FIX_VERSIONS',
+                                       description: 'Jira fix versions',
+                                       type: Array,
+                                       optional: true),
+          FastlaneCore::ConfigItem.new(key: :fix_version,
+                                       env_name: 'FL_JIRA_FETCH_JQL_FIX_VERSION',
+                                       description: 'Jira fix version',
+                                       type: String,
+                                       optional: true,
+                                       conflicting_options: [:fix_versions],
+                                       conflict_block: proc do |_other|
+                                                         FastlaneCore::UI.message('Ignoring :fix_version in favor of :fix_versions')
+                                                       end),
           FastlaneCore::ConfigItem.new(key: :custom_jql,
                                        env_name: 'FL_JIRA_FETCH_JQL_CUSTOM',
                                        description: 'Jira custom jql',
@@ -286,5 +314,11 @@ module Fastlane
         true
       end
     end
+  end
+end
+
+class String
+  def should_escape
+    include?(' ') || include?('(') || include?(')')
   end
 end
