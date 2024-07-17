@@ -101,7 +101,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
       end
 
       it 'succeeds with all array variables' do
-        stub_success_get('project%20in%20(project_one,%20project_two)%20AND%20status%20in%20(status_one,%20status_two)%20AND%20labels%20in%20(label_one,%20label_two)%20AND%20sprint%20in%20(sprint_one,%20sprint_two)%20AND%20fixversion%20in%20(%221.0.0(1)%22,%20%221.0.0(2)%22)%20AND%20my_custom_jql')
+        stub_success_get('project%20in%20(project_one,%20project_two)%20AND%20status%20in%20(status_one,%20status_two)%20AND%20labels%20in%20(%22label_one/label%22,%20%22label_two/label%22)%20AND%20sprint%20in%20(sprint_one,%20sprint_two)%20AND%20fixversion%20in%20(%221.0.0(1)%22,%20%221.0.0(2)%22)%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -111,7 +111,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
             password: 'my_password',
             projects: ['project_one', 'project_two'],
             statuses: ['status_one', 'status_two'],
-            labels: ['label_one', 'label_two'],
+            labels: ['label_one/label', 'label_two/label'],
             sprints: ['sprint_one', 'sprint_two'],
             fix_versions: ['1.0.0(1)', '1.0.0(2)'],
             custom_jql: 'my_custom_jql'
@@ -121,7 +121,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
       end
 
       it 'succeeds with all strings variables' do
-        stub_success_get('project%20=%20my_project%20AND%20status%20=%20my_status%20AND%20labels%20=%20my_label%20AND%20sprint%20=%20my_sprint%20AND%20fixversion%20=%20%221.0.0(1)%22%20AND%20my_custom_jql')
+        stub_success_get('project%20=%20my_project%20AND%20status%20=%20my_status%20AND%20labels%20=%20%22my_label/label%22%20AND%20sprint%20=%20my_sprint%20AND%20fixversion%20=%20%221.0.0(1)%22%20AND%20my_custom_jql')
 
         response = Fastlane::FastFile.new.parse("
         lane :test do
@@ -131,7 +131,7 @@ describe Fastlane::Actions::JiraFetchTicketsAction do
             password: 'my_password',
             project: 'my_project',
             status: 'my_status',
-            label: 'my_label',
+            label: 'my_label/label',
             sprint: 'my_sprint',
             fix_version: '1.0.0(1)',
             custom_jql: 'my_custom_jql'

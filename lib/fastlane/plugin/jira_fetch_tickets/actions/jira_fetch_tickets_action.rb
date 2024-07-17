@@ -319,6 +319,6 @@ end
 
 class String
   def should_escape
-    include?(' ') || include?('(') || include?(')')
+    include?(' ') || include?('(') || include?(')') || include?('/')
   end
 end
